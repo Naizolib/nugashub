@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NugasHub — Jasa Tugas & Desain Mahasiswa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+--blue:#3B82F6;--blue-dark:#2563EB;--blue-deeper:#1D4ED8;--blue-light:#EFF6FF;--blue-mid:#DBEAFE;
+--white:#FFFFFF;--gray-50:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;--gray-300:#CBD5E1;
+--gray-400:#94A3B8;--gray-500:#64748B;--gray-600:#475569;--gray-700:#334155;--gray-800:#1E293B;--gray-900:#0F172A;
+--text-primary:#0F172A;--text-secondary:#475569;--text-muted:#94A3B8;
+--bg-primary:#FFFFFF;--bg-secondary:#F8FAFC;--bg-card:#FFFFFF;
+--shadow-sm:0 1px 3px rgba(15,23,42,.06),0 1px 2px rgba(15,23,42,.04);
+--shadow-md:0 4px 16px rgba(37,99,235,.10),0 2px 6px rgba(15,23,42,.06);
+--shadow-lg:0 12px 32px rgba(37,99,235,.14),0 4px 12px rgba(15,23,42,.08);
+--shadow-blue:0 8px 24px rgba(59,130,246,.30);
+--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:24px;--radius-full:9999px;
+--transition:all .25s cubic-bezier(.4,0,.2,1);
+}
+[data-theme="dark"]{
+--blue:#60A5FA;--blue-dark:#3B82F6;--blue-light:#1E3A5F;--blue-mid:#1E3A5F;
+--white:#1E293B;--gray-50:#0F172A;--gray-100:#1E293B;--gray-200:#334155;--gray-300:#475569;
+--gray-400:#64748B;--gray-500:#94A3B8;--gray-600:#CBD5E1;--gray-700:#E2E8F0;--gray-800:#F1F5F9;--gray-900:#F8FAFC;
+--text-primary:#F1F5F9;--text-secondary:#94A3B8;--text-muted:#64748B;
+--bg-primary:#0F172A;--bg-secondary:#1E293B;--bg-card:#1E293B;
+--shadow-sm:0 1px 3px rgba(0,0,0,.3);--shadow-md:0 4px 16px rgba(0,0,0,.4);--shadow-lg:0 12px 32px rgba(0,0,0,.5);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Poppins',sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.7;overflow-x:hidden;transition:background .3s,color .3s}
+
+/* Scroll Progress */
+#scroll-progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--blue),#818CF8);z-index:9999;width:0%;transition:width .1s}
+
+/* Navbar */
+#navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.25rem 0;transition:var(--transition)}
+#navbar.scrolled{background:rgba(255,255,255,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--gray-200);padding:.9rem 0;box-shadow:var(--shadow-sm)}
+[data-theme="dark"] #navbar.scrolled{background:rgba(15,23,42,.92);border-color:var(--gray-700)}
+.nav-container{max-width:1200px;margin:0 auto;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.nav-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none}
+.nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--blue),var(--blue-deeper));border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;color:#fff;letter-spacing:-.5px;flex-shrink:0}
+.nav-logo-text{font-size:1.05rem;font-weight:700;color:var(--text-primary);letter-spacing:-.3px;line-height:1.2}
+.nav-logo-text span{color:var(--blue);display:block;font-size:.65rem;font-weight:500;letter-spacing:.5px;text-transform:uppercase;opacity:.8}
+.nav-links{display:flex;align-items:center;gap:.25rem;list-style:none}
+.nav-links a{padding:.45rem .8rem;border-radius:var(--radius-sm);font-size:.875rem;font-weight:500;color:var(--text-secondary);text-decoration:none;transition:var(--transition)}
+.nav-links a:hover{color:var(--blue);background:var(--blue-light)}
+.nav-actions{display:flex;align-items:center;gap:.75rem}
+.btn-theme{width:36px;height:36px;border-radius:var(--radius-sm);border:1px solid var(--gray-200);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);transition:var(--transition);font-size:1rem}
+.btn-theme:hover{background:var(--gray-100);color:var(--text-primary)}
+.btn-cta{padding:.55rem 1.25rem;background:linear-gradient(135deg,var(--blue),var(--blue-deeper));color:#fff;border:none;border-radius:var(--radius-full);font-family:'Poppins',sans-serif;font-size:.875rem;font-weight:600;cursor:pointer;transition:var(--transition);box-shadow:var(--shadow-blue);white-space:nowrap}
+.btn-cta:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(59,130,246,.4)}
+.nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:.35rem;border:none;background:transparent}
+.nav-toggle span{display:block;width:22px;height:2px;background:var(--text-primary);border-radius:2px;transition:var(--transition)}
+
+/* Mobile Menu */
+.mobile-menu{display:none;position:fixed;top:65px;left:0;right:0;background:var(--bg-card);border-bottom:1px solid var(--gray-200);z-index:999;padding:1rem 1.5rem;box-shadow:var(--shadow-md)}
+.mobile-menu.open{display:block}
+.mobile-menu ul{list-style:none;display:flex;flex-direction:column;gap:.25rem}
+.mobile-menu a{display:block;padding:.65rem .75rem;font-size:.9rem;font-weight:500;color:var(--text-secondary);text-decoration:none;border-radius:var(--radius-sm)}
+.mobile-menu a:hover{background:var(--blue-light);color:var(--blue)}
+.mobile-menu .btn-cta{display:block;text-align:center;margin-top:.75rem;padding:.7rem}
+
+/* Sections */
+section{padding:5rem 0}
+.container{max-width:1200px;margin:0 auto;padding:0 1.5rem}
+.section-tag{display:inline-block;padding:.3rem .9rem;background:var(--blue-light);color:var(--blue-dark);border-radius:var(--radius-full);font-size:.75rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:1rem}
+[data-theme="dark"] .section-tag{background:rgba(59,130,246,.15);color:var(--blue)}
+.section-title{font-size:clamp(1.75rem,3.5vw,2.5rem);font-weight:800;color:var(--text-primary);line-height:1.2;letter-spacing:-.5px;margin-bottom:.75rem}
+.section-title span{background:linear-gradient(135deg,var(--blue),#818CF8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.section-sub{font-size:1.05rem;color:var(--text-secondary);max-width:560px;line-height:1.7}
+
+/* Hero */
+#hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:7rem 0 5rem}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.35}
+.hero-blob-1{width:600px;height:600px;background:radial-gradient(circle,#3B82F6,#818CF8);top:-200px;right:-100px}
+.hero-blob-2{width:400px;height:400px;background:radial-gradient(circle,#2563EB,#0EA5E9);bottom:-100px;left:-100px}
+.hero-blob-3{width:300px;height:300px;background:radial-gradient(circle,#818CF8,#6366F1);top:30%;left:40%}
+[data-theme="dark"] .hero-blob{opacity:.15}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--gray-200) 1px,transparent 1px),linear-gradient(90deg,var(--gray-200) 1px,transparent 1px);background-size:40px 40px;opacity:.4;z-index:0}
+[data-theme="dark"] .hero-grid{opacity:.05}
+.hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.hero-content{}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem .9rem;background:rgba(255,255,255,.8);backdrop-filter:blur(10px);border:1px solid var(--blue-mid);border-radius:var(--radius-full);font-size:.8rem;font-weight:600;color:var(--blue-dark);margin-bottom:1.5rem;animation:fadeInDown .6s ease}
+[data-theme="dark"] .hero-badge{background:rgba(30,58,95,.8);border-color:rgba(59,130,246,.3);color:var(--blue)}
+.hero-badge-dot{width:6px;height:6px;background:var(--blue);border-radius:50%;animation:pulse 2s infinite}
+.hero-h1{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:900;line-height:1.1;letter-spacing:-1px;color:var(--text-primary);margin-bottom:1.25rem;animation:fadeInUp .7s .1s both}
+.hero-h1 .highlight{background:linear-gradient(135deg,var(--blue),#818CF8,#0EA5E9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:1.05rem;color:var(--text-secondary);line-height:1.75;margin-bottom:2rem;animation:fadeInUp .7s .2s both}
+.hero-btns{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;margin-bottom:2.5rem;animation:fadeInUp .7s .3s both}
+.btn-primary{padding:.75rem 1.75rem;background:linear-gradient(135deg,var(--blue),var(--blue-deeper));color:#fff;border:none;border-radius:var(--radius-full);font-family:'Poppins',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;transition:var(--transition);box-shadow:var(--shadow-blue)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(59,130,246,.45)}
+.btn-outline{padding:.75rem 1.75rem;background:transparent;color:var(--blue-dark);border:2px solid var(--blue);border-radius:var(--radius-full);font-family:'Poppins',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;transition:var(--transition);text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+.btn-outline:hover{background:var(--blue-light);transform:translateY(-2px)}
+[data-theme="dark"] .btn-outline{color:var(--blue);border-color:var(--blue)}
+.hero-stats{display:flex;gap:2rem;flex-wrap:wrap;animation:fadeInUp .7s .4s both}
+.stat-item{text-align:center}
+.stat-num{font-size:1.5rem;font-weight:800;color:var(--text-primary);line-height:1}
+.stat-num span{color:var(--blue)}
+.stat-label{font-size:.75rem;color:var(--text-muted);font-weight:500;margin-top:.2rem}
+.stat-divider{width:1px;background:var(--gray-200);align-self:stretch}
+.hero-visual{position:relative;animation:fadeInRight .8s .3s both}
+.hero-card-main{background:rgba(255,255,255,.8);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.6);border-radius:var(--radius-xl);padding:2rem;box-shadow:var(--shadow-lg);position:relative}
+[data-theme="dark"] .hero-card-main{background:rgba(30,41,59,.8);border-color:rgba(255,255,255,.08)}
+.hero-workspace{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem}
+.workspace-card{background:var(--blue-light);border-radius:var(--radius-md);padding:1rem;display:flex;flex-direction:column;gap:.4rem}
+[data-theme="dark"] .workspace-card{background:rgba(59,130,246,.1)}
+.workspace-icon{font-size:1.5rem;margin-bottom:.2rem}
+.workspace-title{font-size:.8rem;font-weight:700;color:var(--text-primary)}
+.workspace-sub{font-size:.7rem;color:var(--text-muted)}
+.workspace-bar{height:4px;background:var(--gray-200);border-radius:2px;margin-top:.5rem;overflow:hidden}
+.workspace-bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--blue),#818CF8)}
+.hero-order-card{background:linear-gradient(135deg,var(--blue),var(--blue-deeper));border-radius:var(--radius-md);padding:1.25rem;color:#fff;display:flex;align-items:center;gap:1rem}
+.hero-order-icon{width:44px;height:44px;background:rgba(255,255,255,.2);border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0}
+.hero-order-title{font-weight:700;font-size:.9rem}
+.hero-order-sub{font-size:.75rem;opacity:.8}
+.hero-float-1{position:absolute;top:-20px;right:-20px;background:#fff;border-radius:var(--radius-md);padding:.75rem 1rem;box-shadow:var(--shadow-md);display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:600;color:var(--gray-700);animation:float 3s ease-in-out infinite}
+[data-theme="dark"] .hero-float-1{background:var(--bg-card);color:var(--text-primary)}
+.hero-float-2{position:absolute;bottom:-15px;left:-20px;background:#fff;border-radius:var(--radius-md);padding:.6rem .9rem;box-shadow:var(--shadow-md);display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-weight:600;color:var(--gray-700);animation:float 3.5s ease-in-out .5s infinite}
+[data-theme="dark"] .hero-float-2{background:var(--bg-card);color:var(--text-primary)}
+.float-badge{width:8px;height:8px;border-radius:50%}
+.badge-green{background:#22C55E}
+.badge-amber{background:#F59E0B}
+
+/* Services */
+#layanan{background:var(--bg-secondary)}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:3rem}
+.service-card{background:var(--bg-card);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:1.75rem;transition:var(--transition);cursor:pointer;position:relative;overflow:hidden}
+[data-theme="dark"] .service-card{border-color:var(--gray-700)}
+.service-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--blue),var(--blue-deeper));opacity:0;transition:var(--transition);z-index:0}
+.service-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:var(--blue)}
+.service-card:hover::before{opacity:1}
+.service-card:hover .service-icon-wrap,.service-card:hover .service-title,.service-card:hover .service-desc,.service-card:hover .service-tags span,.service-card:hover .btn-service{color:#fff}
+.service-card:hover .service-icon-wrap{background:rgba(255,255,255,.2)}
+.service-card:hover .btn-service{background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4)}
+.service-card:hover .service-tags span{background:rgba(255,255,255,.15);color:rgba(255,255,255,.9)}
+.service-card>*{position:relative;z-index:1}
+.service-icon-wrap{width:52px;height:52px;background:var(--blue-light);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1.25rem;transition:var(--transition)}
+[data-theme="dark"] .service-icon-wrap{background:rgba(59,130,246,.15)}
+.service-title{font-size:1.05rem;font-weight:700;color:var(--text-primary);margin-bottom:.5rem;transition:var(--transition)}
+.service-desc{font-size:.875rem;color:var(--text-secondary);line-height:1.65;margin-bottom:1rem;transition:var(--transition)}
+.service-tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.25rem}
+.service-tags span{padding:.2rem .65rem;background:var(--blue-light);color:var(--blue-dark);border-radius:var(--radius-full);font-size:.7rem;font-weight:600;transition:var(--transition)}
+[data-theme="dark"] .service-tags span{background:rgba(59,130,246,.15);color:var(--blue)}
+.btn-service{padding:.55rem 1.1rem;border:1.5px solid var(--gray-200);background:transparent;border-radius:var(--radius-full);font-family:'Poppins',sans-serif;font-size:.8rem;font-weight:600;cursor:pointer;transition:var(--transition);color:var(--text-secondary)}
+.btn-service:hover{border-color:var(--blue);color:var(--blue)}
+
+/* Why Us */
+#kenapa{background:var(--bg-primary)}
+.why-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;margin-top:3rem}
+.why-image{position:relative}
+.why-card-big{background:linear-gradient(135deg,var(--blue),var(--blue-deeper));border-radius:var(--radius-xl);padding:2.5rem;color:#fff;position:relative;overflow:hidden}
+.why-card-big::after{content:'';position:absolute;bottom:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.08)}
+.why-card-big::before{content:'';position:absolute;top:-30px;left:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.05)}
+.why-big-num{font-size:3.5rem;font-weight:900;line-height:1;margin-bottom:.25rem}
+.why-big-label{font-size:.95rem;opacity:.85}
+.why-mini-cards{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-top:1rem}
+.why-mini{background:#fff;border-radius:var(--radius-md);padding:1rem;box-shadow:var(--shadow-md)}
+[data-theme="dark"] .why-mini{background:var(--bg-secondary)}
+.why-mini-num{font-size:1.25rem;font-weight:800;color:var(--blue-dark)}
+.why-mini-label{font-size:.75rem;color:var(--text-muted);font-weight:500}
+.why-points{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.why-point{display:flex;align-items:flex-start;gap:.9rem}
+.why-point-icon{width:42px;height:42px;border-radius:var(--radius-sm);background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0}
+[data-theme="dark"] .why-point-icon{background:rgba(59,130,246,.15)}
+.why-point-title{font-size:.9rem;font-weight:700;color:var(--text-primary);margin-bottom:.2rem}
+.why-point-sub{font-size:.8rem;color:var(--text-secondary);line-height:1.5}
+
+/* Pricing */
+#harga{background:var(--bg-secondary)}
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:3rem;align-items:start}
+.price-card{background:var(--bg-card);border:1.5px solid var(--gray-200);border-radius:var(--radius-xl);padding:2rem;transition:var(--transition);position:relative}
+[data-theme="dark"] .price-card{border-color:var(--gray-700)}
+.price-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.price-card.popular{border-color:var(--blue);background:linear-gradient(180deg,rgba(59,130,246,.06) 0%,var(--bg-card) 100%);transform:scale(1.02)}
+.price-card.popular:hover{transform:scale(1.02) translateY(-4px)}
+.popular-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);padding:.3rem 1rem;background:linear-gradient(135deg,var(--blue),var(--blue-deeper));color:#fff;border-radius:var(--radius-full);font-size:.75rem;font-weight:700;white-space:nowrap;box-shadow:var(--shadow-blue)}
+.price-tier{font-size:.8rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.75rem}
+.price-name{font-size:1.5rem;font-weight:800;color:var(--text-primary);margin-bottom:.25rem}
+.price-amount{display:flex;align-items:baseline;gap:.25rem;margin-bottom:.5rem}
+.price-from{font-size:.8rem;color:var(--text-muted);font-weight:500}
+.price-num{font-size:2.25rem;font-weight:900;color:var(--blue-dark);line-height:1}
+.price-period{font-size:.8rem;color:var(--text-muted)}
+.price-desc{font-size:.85rem;color:var(--text-secondary);margin-bottom:1.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--gray-200)}
+[data-theme="dark"] .price-desc{border-color:var(--gray-700)}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:.75rem;margin-bottom:2rem}
+.price-features li{display:flex;align-items:flex-start;gap:.6rem;font-size:.875rem;color:var(--text-secondary)}
+.check-icon{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue-deeper));display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:.1rem}
+.check-icon::after{content:'✓';font-size:.6rem;color:#fff;font-weight:800}
+.price-features li.x-icon .check-icon{background:var(--gray-200)}
+.price-features li.x-icon .check-icon::after{content:'✕';color:var(--gray-400)}
+.btn-price{width:100%;padding:.75rem;border-radius:var(--radius-full);font-family:'Poppins',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:var(--transition)}
+.btn-price-outline{background:transparent;border:2px solid var(--gray-200);color:var(--text-secondary)}
+.btn-price-outline:hover{border-color:var(--blue);color:var(--blue)}
+.btn-price-solid{background:linear-gradient(135deg,var(--blue),var(--blue-deeper));border:none;color:#fff;box-shadow:var(--shadow-blue)}
+.btn-price-solid:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(59,130,246,.4)}
+
+/* Testimonials */
+#testimoni{background:var(--bg-primary)}
+.testi-slider-wrap{position:relative;overflow:hidden;margin-top:3rem}
+.testi-slider{display:flex;gap:1.5rem;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.testi-card{background:var(--bg-card);border:1px solid var(--gray-200);border-radius:var(--radius-xl);padding:2rem;min-width:calc(33.33% - 1rem);flex-shrink:0;transition:var(--transition)}
+[data-theme="dark"] .testi-card{border-color:var(--gray-700)}
+.testi-card:hover{box-shadow:var(--shadow-md);transform:translateY(-3px)}
+.testi-stars{display:flex;gap:.25rem;margin-bottom:1rem}
+.star{color:#F59E0B;font-size:1rem}
+.testi-quote{font-size:.95rem;color:var(--text-primary);line-height:1.7;font-weight:500;margin-bottom:1.5rem;font-style:italic}
+.testi-quote::before{content:'"';font-size:1.5rem;color:var(--blue);line-height:0;vertical-align:-.25em;margin-right:.1rem;font-style:normal}
+.testi-user{display:flex;align-items:center;gap:.75rem}
+.testi-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;color:#fff;flex-shrink:0}
+.testi-name{font-size:.9rem;font-weight:700;color:var(--text-primary)}
+.testi-role{font-size:.75rem;color:var(--text-muted)}
+.testi-tag{display:inline-block;margin-top:.25rem;padding:.15rem .6rem;background:var(--blue-light);color:var(--blue-dark);border-radius:var(--radius-full);font-size:.65rem;font-weight:600}
+[data-theme="dark"] .testi-tag{background:rgba(59,130,246,.15);color:var(--blue)}
+.slider-controls{display:flex;align-items:center;justify-content:center;gap:1rem;margin-top:2rem}
+.slider-btn{width:42px;height:42px;border-radius:50%;border:1.5px solid var(--gray-200);background:var(--bg-card);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;color:var(--text-secondary);transition:var(--transition)}
+.slider-btn:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.slider-dots{display:flex;gap:.5rem}
+.dot{width:8px;height:8px;border-radius:4px;background:var(--gray-300);cursor:pointer;transition:var(--transition)}
+.dot.active{width:24px;background:var(--blue)}
+
+/* FAQ */
+#faq{background:var(--bg-secondary)}
+.faq-list{max-width:720px;margin:3rem auto 0;display:flex;flex-direction:column;gap:.75rem}
+.faq-item{background:var(--bg-card);border:1px solid var(--gray-200);border-radius:var(--radius-lg);overflow:hidden;transition:var(--transition)}
+[data-theme="dark"] .faq-item{border-color:var(--gray-700)}
+.faq-item.open{border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,130,246,.08)}
+.faq-q{padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;gap:1rem}
+.faq-q-text{font-size:.95rem;font-weight:600;color:var(--text-primary)}
+.faq-icon{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--gray-200);display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--text-secondary);flex-shrink:0;transition:var(--transition)}
+.faq-item.open .faq-icon{background:var(--blue);border-color:var(--blue);color:#fff;transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s ease,padding .3s ease}
+.faq-a-inner{padding:0 1.5rem 1.25rem;font-size:.9rem;color:var(--text-secondary);line-height:1.75}
+.faq-item.open .faq-a{max-height:200px}
+
+/* CTA */
+#cta{background:linear-gradient(135deg,var(--blue-deeper) 0%,#1E40AF 50%,#4F46E5 100%);padding:6rem 0;position:relative;overflow:hidden}
+.cta-blob{position:absolute;border-radius:50%;background:rgba(255,255,255,.06);filter:blur(40px)}
+.cta-blob-1{width:400px;height:400px;top:-150px;right:-100px}
+.cta-blob-2{width:300px;height:300px;bottom:-100px;left:-50px}
+.cta-inner{position:relative;z-index:1;text-align:center}
+.cta-label{display:inline-block;padding:.3rem .9rem;background:rgba(255,255,255,.15);color:rgba(255,255,255,.9);border-radius:var(--radius-full);font-size:.75rem;font-weight:600;letter-spacing:.5px;text-transform:uppercase;margin-bottom:1.25rem;border:1px solid rgba(255,255,255,.2)}
+.cta-h2{font-size:clamp(1.9rem,4vw,3rem);font-weight:900;color:#fff;line-height:1.15;margin-bottom:1rem;letter-spacing:-.5px}
+.cta-sub{font-size:1rem;color:rgba(255,255,255,.8);max-width:500px;margin:0 auto 2.5rem}
+.cta-btns{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap}
+.btn-wa{display:inline-flex;align-items:center;gap:.6rem;padding:.8rem 1.8rem;background:#22C55E;color:#fff;border:none;border-radius:var(--radius-full);font-family:'Poppins',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:var(--transition);box-shadow:0 8px 20px rgba(34,197,94,.4)}
+.btn-wa:hover{background:#16A34A;transform:translateY(-2px);box-shadow:0 12px 28px rgba(34,197,94,.5)}
+.btn-order-white{padding:.8rem 1.8rem;background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.4);border-radius:var(--radius-full);font-family:'Poppins',sans-serif;font-size:.95rem;font-weight:700;cursor:pointer;transition:var(--transition);backdrop-filter:blur(10px)}
+.btn-order-white:hover{background:rgba(255,255,255,.25);transform:translateY(-2px)}
+
+/* Footer */
+footer{background:var(--gray-900);color:#fff;padding:4rem 0 2rem}
+[data-theme="dark"] footer{background:#000}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+.footer-brand p{font-size:.875rem;color:rgba(255,255,255,.55);line-height:1.7;margin-top:1rem;max-width:280px}
+.footer-socials{display:flex;gap:.75rem;margin-top:1.5rem}
+.social-btn{width:38px;height:38px;border-radius:var(--radius-sm);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6);font-size:.9rem;cursor:pointer;transition:var(--transition);text-decoration:none}
+.social-btn:hover{background:var(--blue);border-color:var(--blue);color:#fff;transform:translateY(-2px)}
+.footer-col h4{font-size:.85rem;font-weight:700;color:rgba(255,255,255,.9);letter-spacing:.5px;text-transform:uppercase;margin-bottom:1.25rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.footer-col a{font-size:.85rem;color:rgba(255,255,255,.5);text-decoration:none;transition:var(--transition)}
+.footer-col a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:2rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem}
+.footer-bottom p{font-size:.8rem;color:rgba(255,255,255,.35)}
+.footer-bottom span{color:var(--blue)}
+.footer-email{display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:rgba(255,255,255,.45)}
+
+/* Back to top */
+#back-top{position:fixed;bottom:1.5rem;right:1.5rem;width:44px;height:44px;background:linear-gradient(135deg,var(--blue),var(--blue-deeper));color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.1rem;box-shadow:var(--shadow-blue);transition:var(--transition);opacity:0;transform:translateY(20px);z-index:999}
+#back-top.visible{opacity:1;transform:translateY(0)}
+#back-top:hover{transform:translateY(-3px)}
+
+/* Animations */
+@keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeInRight{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.3);opacity:.7}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+/* Scroll reveal */
+.reveal{opacity:0;transform:translateY(32px);transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1)}
+.reveal.revealed{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}.reveal-delay-2{transition-delay:.2s}.reveal-delay-3{transition-delay:.3s}
+
+/* Loading Screen */
+#loading{position:fixed;inset:0;background:linear-gradient(135deg,var(--blue-deeper),#4F46E5);z-index:99999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:1rem;transition:opacity .6s,visibility .6s}
+#loading.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loading-logo{font-size:1.75rem;font-weight:900;color:#fff;letter-spacing:-.5px}
+.loading-logo span{opacity:.7}
+.loading-bar-wrap{width:160px;height:3px;background:rgba(255,255,255,.2);border-radius:2px;overflow:hidden}
+.loading-bar{height:100%;background:#fff;border-radius:2px;animation:loadingAnim 1.5s ease forwards}
+@keyframes loadingAnim{0%{width:0}100%{width:100%}}
+.loading-text{font-size:.8rem;color:rgba(255,255,255,.6);font-weight:500}
+
+/* Responsive */
+@media(max-width:1024px){
+  .hero-inner,.why-inner{grid-template-columns:1fr}
+  .hero-visual{display:none}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  .nav-links,.nav-actions .btn-cta{display:none}
+  .nav-toggle{display:flex}
+  section{padding:3.5rem 0}
+  .why-points{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .testi-card{min-width:calc(100% - 0px)}
+  .hero-stats{gap:1.25rem}
+  .hero-h1{font-size:2rem}
+}
+@media(max-width:480px){
+  .pricing-grid{grid-template-columns:1fr}
+  .price-card.popular{transform:none}
+  .why-workspace,.hero-workspace{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div id="loading">
+  <div class="loading-logo">Riz<span>Task</span> Studio</div>
+  <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
+  <div class="loading-text">Memuat halaman...</div>
+</div>
+
+<!-- Scroll Progress -->
+<div id="scroll-progress"></div>
+
+<!-- Navbar -->
+<nav id="navbar">
+  <div class="nav-container">
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-icon">RT</div>
+      <div class="nav-logo-text">NugasHub<span>Jasa Akademik Digital</span></div>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#hero">Beranda</a></li>
+      <li><a href="#layanan">Layanan</a></li>
+      <li><a href="#harga">Harga</a></li>
+      <li><a href="#testimoni">Testimoni</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#cta">Kontak</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="btn-theme" id="theme-toggle" title="Toggle dark mode">🌙</button>
+      <button class="btn-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Pesan Sekarang</button>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <ul>
+    <li><a href="#hero" onclick="closeMobile()">Beranda</a></li>
+    <li><a href="#layanan" onclick="closeMobile()">Layanan</a></li>
+    <li><a href="#harga" onclick="closeMobile()">Harga</a></li>
+    <li><a href="#testimoni" onclick="closeMobile()">Testimoni</a></li>
+    <li><a href="#faq" onclick="closeMobile()">FAQ</a></li>
+    <li><a href="#cta" onclick="closeMobile()">Kontak</a></li>
+  </ul>
+  <button class="btn-cta" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'});closeMobile()">Pesan Sekarang</button>
+</div>
+
+<!-- Hero -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="hero-blob hero-blob-1"></div>
+    <div class="hero-blob hero-blob-2"></div>
+    <div class="hero-blob hero-blob-3"></div>
+  </div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="hero-badge-dot"></span>
+          ✨ Trusted by 150+ Mahasiswa
+        </div>
+        <h1 class="hero-h1">Jasa Tugas & Desain Mahasiswa<br><span class="highlight">Anti Ribet</span></h1>
+        <p class="hero-sub">Bantu tugas, proposal, PPT, desain Canva, revisi jurnal, dan kebutuhan akademik lainnya dengan cepat, rapi, dan profesional.</p>
+        <div class="hero-btns">
+          <button class="btn-primary" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">🚀 Order Sekarang</button>
+          <a href="#layanan" class="btn-outline">Lihat Layanan →</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-num">500<span>+</span></div>
+            <div class="stat-label">Tugas Selesai</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-num">150<span>+</span></div>
+            <div class="stat-label">Client Puas</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-num">24<span>Jam</span></div>
+            <div class="stat-label">Fast Response</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div style="position:relative;padding:1rem">
+          <div class="hero-card-main">
+            <div class="hero-workspace">
+              <div class="workspace-card">
+                <div class="workspace-icon">📝</div>
+                <div class="workspace-title">Makalah</div>
+                <div class="workspace-sub">Dikerjakan</div>
+                <div class="workspace-bar"><div class="workspace-bar-fill" style="width:80%"></div></div>
+              </div>
+              <div class="workspace-card">
+                <div class="workspace-icon">🎨</div>
+                <div class="workspace-title">Desain Canva</div>
+                <div class="workspace-sub">Selesai ✓</div>
+                <div class="workspace-bar"><div class="workspace-bar-fill" style="width:100%"></div></div>
+              </div>
+              <div class="workspace-card">
+                <div class="workspace-icon">📊</div>
+                <div class="workspace-title">PPT Presentasi</div>
+                <div class="workspace-sub">Revisi</div>
+                <div class="workspace-bar"><div class="workspace-bar-fill" style="width:60%"></div></div>
+              </div>
+              <div class="workspace-card">
+                <div class="workspace-icon">📄</div>
+                <div class="workspace-title">Skripsi Bab 1</div>
+                <div class="workspace-sub">Antrian</div>
+                <div class="workspace-bar"><div class="workspace-bar-fill" style="width:30%"></div></div>
+              </div>
+            </div>
+            <div class="hero-order-card">
+              <div class="hero-order-icon">⚡</div>
+              <div>
+                <div class="hero-order-title">Order Baru Masuk!</div>
+                <div class="hero-order-sub">PPT 15 slide — Dikerjakan sekarang</div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-float-1">
+            <span class="float-badge badge-green"></span> 23 Order Selesai Hari Ini
+          </div>
+          <div class="hero-float-2">
+            <span class="float-badge badge-amber"></span> Respon dalam 5 menit
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section id="layanan">
+  <div class="container">
+    <div style="text-align:center" class="reveal">
+      <span class="section-tag">Layanan Kami</span>
+      <h2 class="section-title" style="margin:0 auto .75rem">Semua yang Kamu Butuhkan <span>Ada Di Sini</span></h2>
+      <p class="section-sub" style="margin:0 auto;text-align:center">Dari tugas ringan hingga skripsi, kami siap bantu dengan kualitas terjamin dan harga ramah mahasiswa.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon-wrap">📚</div>
+        <div class="service-title">Joki Tugas</div>
+        <div class="service-desc">Kerjakan berbagai tugas kuliah dari berbagai mata kuliah dan jurusan dengan hasil berkualitas dan tepat waktu.</div>
+        <div class="service-tags"><span>Essay</span><span>Laporan</span><span>Rangkuman</span></div>
+        <button class="btn-service" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Pesan →</button>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon-wrap">📊</div>
+        <div class="service-title">PPT Presentasi</div>
+        <div class="service-desc">Slide presentasi profesional dan menarik dengan desain modern, visualisasi data, dan layout yang eye-catching.</div>
+        <div class="service-tags"><span>PowerPoint</span><span>Google Slides</span><span>Canva</span></div>
+        <button class="btn-service" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Pesan →</button>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-icon-wrap">🎨</div>
+        <div class="service-title">Desain Canva</div>
+        <div class="service-desc">Desain poster, infografis, banner, konten IG, dan berbagai kebutuhan visual akademik maupun personal.</div>
+        <div class="service-tags"><span>Poster</span><span>Infografis</span><span>Banner</span></div>
+        <button class="btn-service" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Pesan →</button>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon-wrap">📝</div>
+        <div class="service-title">Makalah & Proposal</div>
+        <div class="service-desc">Penulisan makalah ilmiah, proposal kegiatan, proposal penelitian dengan format akademik yang benar dan tersturktur.</div>
+        <div class="service-tags"><span>Makalah</span><span>Proposal PKM</span><span>KTI</span></div>
+        <button class="btn-service" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Pesan →</button>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon-wrap">🎓</div>
+        <div class="service-title">Revisi Skripsi</div>
+        <div class="service-desc">Bantu revisi skripsi, perbaikan tata bahasa, format penulisan, dan kesesuaian metodologi penelitian kamu.</div>
+        <div class="service-tags"><span>Bab 1-5</span><span>Metodologi</span><span>Daftar Pustaka</span></div>
+        <button class="btn-service" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Pesan →</button>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-icon-wrap">💼</div>
+        <div class="service-title">CV ATS Friendly</div>
+        <div class="service-desc">Buat CV profesional yang lolos sistem ATS perusahaan dengan desain bersih, menarik, dan menonjol di mata recruiter.</div>
+        <div class="service-tags"><span>Fresh Graduate</span><span>Magang</span><span>Professional</span></div>
+        <button class="btn-service" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Pesan →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Why Us -->
+<section id="kenapa">
+  <div class="container">
+    <div class="why-inner">
+      <div class="why-image reveal">
+        <div class="why-card-big">
+          <div class="why-big-num">500+</div>
+          <div class="why-big-label">Tugas Berhasil Dikerjakan</div>
+          <div class="why-mini-cards">
+            <div class="why-mini">
+              <div class="why-mini-num">98%</div>
+              <div class="why-mini-label">Tingkat Kepuasan</div>
+            </div>
+            <div class="why-mini">
+              <div class="why-mini-num">4.9⭐</div>
+              <div class="why-mini-label">Rating Rata-rata</div>
+            </div>
+            <div class="why-mini">
+              <div class="why-mini-num">&lt;1 Jam</div>
+              <div class="why-mini-label">Respon Pertama</div>
+            </div>
+            <div class="why-mini">
+              <div class="why-mini-num">2 Thn</div>
+              <div class="why-mini-label">Pengalaman</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <span class="section-tag">Kenapa Kami</span>
+        <h2 class="section-title">Alasan Ribuan Mahasiswa <span>Percaya Kami</span></h2>
+        <p class="section-sub" style="margin-bottom:2rem">Kami bukan sekadar jasa tugas biasa. Kami mitra akademik terpercaya yang selalu mengutamakan kualitas.</p>
+        <div class="why-points">
+          <div class="why-point">
+            <div class="why-point-icon">⚡</div>
+            <div>
+              <div class="why-point-title">Fast Response</div>
+              <div class="why-point-sub">Balas chat dalam hitungan menit, 24 jam sehari.</div>
+            </div>
+          </div>
+          <div class="why-point">
+            <div class="why-point-icon">💰</div>
+            <div>
+              <div class="why-point-title">Harga Mahasiswa</div>
+              <div class="why-point-sub">Harga super terjangkau, mulai dari Rp10.000.</div>
+            </div>
+          </div>
+          <div class="why-point">
+            <div class="why-point-icon">✨</div>
+            <div>
+              <div class="why-point-title">Desain Premium</div>
+              <div class="why-point-sub">Output berkualitas tinggi, estetik, dan profesional.</div>
+            </div>
+          </div>
+          <div class="why-point">
+            <div class="why-point-icon">⏰</div>
+            <div>
+              <div class="why-point-title">Tepat Waktu</div>
+              <div class="why-point-sub">Deadline aman, pengerjaan sesuai jadwal yang disepakati.</div>
+            </div>
+          </div>
+          <div class="why-point">
+            <div class="why-point-icon">🔄</div>
+            <div>
+              <div class="why-point-title">Revisi Gratis</div>
+              <div class="why-point-sub">Tidak puas? Kami revisi sampai kamu happy.</div>
+            </div>
+          </div>
+          <div class="why-point">
+            <div class="why-point-icon">🔒</div>
+            <div>
+              <div class="why-point-title">Aman & Confidential</div>
+              <div class="why-point-sub">Data dan identitasmu 100% terjaga kerahasiaannya.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section id="harga">
+  <div class="container">
+    <div style="text-align:center" class="reveal">
+      <span class="section-tag">Harga Layanan</span>
+      <h2 class="section-title" style="margin:0 auto .75rem">Pilih Paket yang <span>Sesuai Kebutuhan</span></h2>
+      <p class="section-sub" style="margin:0 auto;text-align:center">Semua paket bisa dikustomisasi. Hubungi kami untuk harga spesial project besar!</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card reveal reveal-delay-1">
+        <div class="price-tier">Basic</div>
+        <div class="price-name">Starter Pack</div>
+        <div class="price-amount">
+          <span class="price-from">Mulai</span>
+          <span class="price-num">Rp10K</span>
+        </div>
+        <div class="price-desc">Cocok untuk tugas ringan dan kebutuhan cepat sehari-hari.</div>
+        <ul class="price-features">
+          <li><span class="check-icon"></span>Essay / Rangkuman</li>
+          <li><span class="check-icon"></span>Tugas Singkat (max 5 hal)</li>
+          <li><span class="check-icon"></span>1x Revisi gratis</li>
+          <li><span class="check-icon"></span>Pengiriman 1–3 hari</li>
+          <li class="x-icon"><span class="check-icon"></span>Prioritas antrian</li>
+          <li class="x-icon"><span class="check-icon"></span>Konsultasi gratis</li>
+        </ul>
+        <button class="btn-price btn-price-outline" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Mulai Order</button>
+      </div>
+      <div class="price-card popular reveal reveal-delay-2">
+        <div class="popular-badge">⭐ Paling Populer</div>
+        <div class="price-tier">Standard</div>
+        <div class="price-name">Student Pack</div>
+        <div class="price-amount">
+          <span class="price-from">Mulai</span>
+          <span class="price-num">Rp50K</span>
+        </div>
+        <div class="price-desc">Solusi lengkap untuk PPT, desain, dan makalah akademik.</div>
+        <ul class="price-features">
+          <li><span class="check-icon"></span>PPT Presentasi (10–20 slide)</li>
+          <li><span class="check-icon"></span>Desain Canva Premium</li>
+          <li><span class="check-icon"></span>Makalah / Proposal</li>
+          <li><span class="check-icon"></span>3x Revisi gratis</li>
+          <li><span class="check-icon"></span>Pengiriman 1–2 hari</li>
+          <li class="x-icon"><span class="check-icon"></span>Prioritas antrian</li>
+        </ul>
+        <button class="btn-price btn-price-solid" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Pesan Sekarang</button>
+      </div>
+      <div class="price-card reveal reveal-delay-3">
+        <div class="price-tier">Premium</div>
+        <div class="price-name">Pro Pack</div>
+        <div class="price-amount">
+          <span class="price-from">Mulai</span>
+          <span class="price-num">Rp150K</span>
+        </div>
+        <div class="price-desc">Untuk skripsi, proposal penelitian, dan project akademik besar.</div>
+        <ul class="price-features">
+          <li><span class="check-icon"></span>Skripsi / Proposal Lengkap</li>
+          <li><span class="check-icon"></span>CV ATS Professional</li>
+          <li><span class="check-icon"></span>Unlimited Revisi</li>
+          <li><span class="check-icon"></span>Prioritas Pengerjaan</li>
+          <li><span class="check-icon"></span>Konsultasi gratis</li>
+          <li><span class="check-icon"></span>Garansi kepuasan</li>
+        </ul>
+        <button class="btn-price btn-price-outline" onclick="document.getElementById('cta').scrollIntoView({behavior:'smooth'})">Mulai Order</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimoni -->
+<section id="testimoni">
+  <div class="container">
+    <div style="text-align:center" class="reveal">
+      <span class="section-tag">Testimoni</span>
+      <h2 class="section-title" style="margin:0 auto .75rem">Apa Kata Mereka <span>Tentang Kami?</span></h2>
+      <p class="section-sub" style="margin:0 auto;text-align:center">Ratusan mahasiswa dari berbagai kampus sudah merasakan manfaatnya.</p>
+    </div>
+    <div class="testi-slider-wrap reveal">
+      <div class="testi-slider" id="testi-slider">
+        <div class="testi-card">
+          <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+          <div class="testi-quote">PPT gua jadi keren banget! Desainnya estetik, slide-nya rapi, dan dosennya puas. Nilai presentasi gua A!</div>
+          <div class="testi-user">
+            <div class="testi-avatar" style="background:linear-gradient(135deg,#3B82F6,#818CF8)">RD</div>
+            <div>
+              <div class="testi-name">Rizky Dwi</div>
+              <div class="testi-role">Mahasiswa Teknik, UGM</div>
+              <span class="testi-tag">PPT Presentasi</span>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+          <div class="testi-quote">Cepat banget responnya dan hasilnya rapih sesuai format kampus. Makalah 15 halaman selesai dalam 1 hari. Recommended!</div>
+          <div class="testi-user">
+            <div class="testi-avatar" style="background:linear-gradient(135deg,#22C55E,#16A34A)">SA</div>
+            <div>
+              <div class="testi-name">Siti Aulia</div>
+              <div class="testi-role">Mahasiswa Hukum, UNPAD</div>
+              <span class="testi-tag">Makalah</span>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+          <div class="testi-quote">Recommended banget buat anak kuliah yang sibuk! CV gua jadi lebih professional dan akhirnya dapat panggilan interview pertama.</div>
+          <div class="testi-user">
+            <div class="testi-avatar" style="background:linear-gradient(135deg,#F59E0B,#D97706)">DP</div>
+            <div>
+              <div class="testi-name">Dimas Pratama</div>
+              <div class="testi-role">Fresh Graduate, UI</div>
+              <span class="testi-tag">CV ATS Friendly</span>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+          <div class="testi-quote">Skripsi bab 1-3 gua dibantu revisi, hasilnya jauh lebih bagus. Dosen pembimbing langsung acc tanpa banyak revisi. Makasih banget!</div>
+          <div class="testi-user">
+            <div class="testi-avatar" style="background:linear-gradient(135deg,#EC4899,#BE185D)">NF</div>
+            <div>
+              <div class="testi-name">Nadia Fitri</div>
+              <div class="testi-role">Mahasiswa Psikologi, UNDIP</div>
+              <span class="testi-tag">Revisi Skripsi</span>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+          <div class="testi-quote">Desain Canva-nya keren abis! Poster UKM gua jadi viral di Instagram kampus. Harganya juga sangat terjangkau untuk kualitas segitu.</div>
+          <div class="testi-user">
+            <div class="testi-avatar" style="background:linear-gradient(135deg,#8B5CF6,#6D28D9)">BH</div>
+            <div>
+              <div class="testi-name">Bagas Hendra</div>
+              <div class="testi-role">Ketua UKM, UNY</div>
+              <span class="testi-tag">Desain Canva</span>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+          <div class="testi-quote">Proposal PKM gua tembus pendanaan nasional! Tim RizTask beneran bantu dari awal sampai akhir dengan sabar dan profesional.</div>
+          <div class="testi-user">
+            <div class="testi-avatar" style="background:linear-gradient(135deg,#0EA5E9,#0284C7)">RA</div>
+            <div>
+              <div class="testi-name">Reza Alfarizi</div>
+              <div class="testi-role">Mahasiswa Bisnis, ITB</div>
+              <span class="testi-tag">Proposal PKM</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="slider-controls reveal">
+      <button class="slider-btn" id="prev-btn">←</button>
+      <div class="slider-dots" id="slider-dots"></div>
+      <button class="slider-btn" id="next-btn">→</button>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div style="text-align:center" class="reveal">
+      <span class="section-tag">FAQ</span>
+      <h2 class="section-title" style="margin:0 auto .75rem">Pertanyaan yang <span>Sering Ditanyakan</span></h2>
+      <p class="section-sub" style="margin:0 auto;text-align:center">Masih ada pertanyaan? Hubungi kami langsung via WhatsApp!</p>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">⏱ Berapa lama waktu pengerjaan?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">Waktu pengerjaan bervariasi tergantung jenis dan kompleksitas tugas. Tugas ringan bisa selesai dalam 3–6 jam, PPT dan desain 6–24 jam, sedangkan makalah dan skripsi bisa 1–3 hari. Kami selalu komitmen dengan deadline yang disepakati di awal.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">🔄 Apakah bisa revisi jika tidak puas?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">Tentu bisa! Setiap paket sudah termasuk revisi gratis (1x untuk Basic, 3x untuk Standard, unlimited untuk Premium). Kami akan merevisi sampai kamu benar-benar puas dengan hasilnya.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">💳 Pembayaran lewat apa saja?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">Kami menerima pembayaran via transfer bank (BCA, Mandiri, BNI, BRI), dompet digital (GoPay, OVO, DANA, ShopeePay), dan QRIS. Pembayaran dilakukan 50% di awal dan 50% setelah selesai untuk order di atas Rp100K.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">🔒 Apakah data saya aman dan terjaga kerahasiaannya?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">100% aman! Kami menjaga kerahasiaan identitas dan data semua klien. Kami tidak pernah membagikan atau mempublikasikan hasil pekerjaan tanpa seizin klien. Kepercayaan kamu adalah prioritas utama kami.</div></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">📱 Bagaimana cara memesan?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a"><div class="faq-a-inner">Pemesanan sangat mudah! Cukup klik tombol "Chat WhatsApp" atau "Order Sekarang", lalu ceritakan kebutuhan tugasmu (jenis tugas, deadline, spesifikasi). Kami akan memberikan estimasi harga dan waktu pengerjaan dalam waktu singkat.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-blob cta-blob-1"></div>
+  <div class="cta-blob cta-blob-2"></div>
+  <div class="container">
+    <div class="cta-inner reveal">
+      <span class="cta-label">🚀 Mulai Sekarang</span>
+      <h2 class="cta-h2">Siap Bantu Tugas<br>Kamu Hari Ini!</h2>
+      <p class="cta-sub">Jangan tunda lagi. Chat kami sekarang dan tugas kamu beres sebelum deadline!</p>
+
+      <div class="cta-btns">
+        <button 
+          class="btn-wa" 
+          onclick="window.open('https://wa.me/6285725129579?text=Halo%20saya%20mau%20order%20jasa','_blank')"
+        >
+          <span>💬</span> Chat WhatsApp
+        </button>
+
+        <button 
+          class="btn-order-white" 
+          onclick="window.open('https://wa.me/6285725129579?text=Halo%20saya%20mau%20order%20jasa','_blank')"
+        >
+          ✍️ Order Sekarang
+        </button>
+      </div>
+
+      <p style="margin-top:1.5rem;font-size:.8rem;color:rgba(255,255,255,.5)">
+        📍 Online 24 jam • Respon cepat • Terpercaya
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div style="display:flex;align-items:center;gap:.6rem">
+          <div style="width:36px;height:36px;background:linear-gradient(135deg,#3B82F6,#2563EB);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem;color:#fff">RT</div>
+          <span style="font-size:1.1rem;font-weight:700;color:#fff">NugasHub</span>
+        </div>
+        <p>Mitra akademik terpercaya untuk mahasiswa yang butuh bantuan tugas, desain, dan kebutuhan akademik lainnya.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-btn" title="Instagram">📸</a>
+          <a href="#" class="social-btn" title="TikTok">🎵</a>
+          <a href="#" class="social-btn" title="Twitter">🐦</a>
+          <a href="#" class="social-btn" title="WhatsApp">💬</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Layanan</h4>
+        <ul>
+          <li><a href="#layanan">Joki Tugas</a></li>
+          <li><a href="#layanan">PPT Presentasi</a></li>
+          <li><a href="#layanan">Desain Canva</a></li>
+          <li><a href="#layanan">Makalah & Proposal</a></li>
+          <li><a href="#layanan">Revisi Skripsi</a></li>
+          <li><a href="#layanan">CV ATS Friendly</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Navigasi</h4>
+        <ul>
+          <li><a href="#hero">Beranda</a></li>
+          <li><a href="#kenapa">Kenapa Kami</a></li>
+          <li><a href="#harga">Harga</a></li>
+          <li><a href="#testimoni">Testimoni</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Kontak</h4>
+        <ul>
+          <li><a href="#">💬 WhatsApp: 0812-3456-7890</a></li>
+          <li><a href="#">📧 NugasHub.studio@gmail.com</a></li>
+          <li><a href="#">📸 @nugasHub.studio</a></li>
+          <li><a href="#">🕐 Online 24 Jam / 7 Hari</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 <span>RizTask Studio</span>. All rights reserved. Made with ❤️ for Mahasiswa Indonesia.</p>
+      <p style="font-size:.8rem;color:rgba(255,255,255,.3)">Privacy Policy · Terms of Service</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Back to Top -->
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="Kembali ke atas">↑</button>
+
+<script>
+// Loading
+window.addEventListener('load',()=>{
+  setTimeout(()=>{document.getElementById('loading').classList.add('hidden')},1500);
+});
+
+// Navbar scroll
+const navbar=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  if(window.scrollY>60)navbar.classList.add('scrolled');
+  else navbar.classList.remove('scrolled');
+  // Scroll progress
+  const p=document.getElementById('scroll-progress');
+  const pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;
+  p.style.width=pct+'%';
+  // Back to top
+  const b=document.getElementById('back-top');
+  if(window.scrollY>400)b.classList.add('visible');
+  else b.classList.remove('visible');
+});
+
+// Mobile menu
+const toggle=document.getElementById('nav-toggle');
+const menu=document.getElementById('mobile-menu');
+toggle.addEventListener('click',()=>menu.classList.toggle('open'));
+function closeMobile(){menu.classList.remove('open')}
+
+// Dark mode
+const themeBtn=document.getElementById('theme-toggle');
+let dark=false;
+themeBtn.addEventListener('click',()=>{
+  dark=!dark;
+  document.documentElement.setAttribute('data-theme',dark?'dark':'light');
+  themeBtn.textContent=dark?'☀️':'🌙';
+});
+
+// FAQ accordion
+function toggleFaq(el){
+  const item=el.closest('.faq-item');
+  const isOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!isOpen)item.classList.add('open');
+}
+
+// Testimonial slider
+const slider=document.getElementById('testi-slider');
+const cards=slider.querySelectorAll('.testi-card');
+const dotsWrap=document.getElementById('slider-dots');
+let perSlide=window.innerWidth<=768?1:3;
+let totalSlides=Math.ceil(cards.length/perSlide);
+let current=0;
+
+function buildDots(){
+  dotsWrap.innerHTML='';
+  perSlide=window.innerWidth<=768?1:3;
+  totalSlides=Math.ceil(cards.length/perSlide);
+  for(let i=0;i<totalSlides;i++){
+    const d=document.createElement('div');
+    d.className='dot'+(i===current?' active':'');
+    d.onclick=()=>goTo(i);
+    dotsWrap.appendChild(d);
+  }
+}
+
+function goTo(idx){
+  current=idx;
+  const cardW=cards[0].offsetWidth+24;
+  slider.style.transform=`translateX(-${current*perSlide*cardW}px)`;
+  dotsWrap.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===current));
+}
+
+document.getElementById('prev-btn').onclick=()=>goTo((current-1+totalSlides)%totalSlides);
+document.getElementById('next-btn').onclick=()=>goTo((current+1)%totalSlides);
+buildDots();
+window.addEventListener('resize',()=>{current=0;buildDots();goTo(0)});
+setInterval(()=>goTo((current+1)%totalSlides),5000);
+
+// Scroll reveal
+const revealEls=document.querySelectorAll('.reveal');
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('revealed');observer.unobserve(e.target)}});
+},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+revealEls.forEach(el=>observer.observe(el));
+</script>
+</body>
+</html>
